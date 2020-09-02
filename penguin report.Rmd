@@ -5,6 +5,9 @@ params:
   Study: Study
   Title: Title
   Subtitle: Subtitle
+  Min_Date: min_date
+  Max_Date: max_date
+  Data: Data
 title: "`r params$Title`"
 subtitle: "`r params$Subtitle`"
 date: "`r params$Date`"
@@ -21,11 +24,11 @@ knitr::opts_chunk$set(echo = FALSE,
 ```
 
 # Eggs Observed  
-Number of eggs observed by date
+Number of eggs observed by date within `r params$Min_Date` and `r params$Max_Date`
 
 ```{r}
 #this value has been passed from the .R file
-df <- p_df
+df <- params$Data
 
 if (length(unique(df$island) > 1)) {
   df %>%
