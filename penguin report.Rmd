@@ -1,0 +1,71 @@
+---
+author: "Alyssa Goldberg"
+params:
+  Date: Date
+  Study: Study
+  Title: Title
+  Subtitle: Subtitle
+title: "`r params$Title`"
+subtitle: "`r params$Subtitle`"
+date: "`r params$Date`"
+output: 
+  word_document: 
+    toc: yes
+    reference_docx: pin-styles.docx
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,
+                      message = FALSE,
+                      warning = FALSE)
+```
+
+# Eggs Observed  
+Number of eggs observed by date
+
+```{r}
+#this value has been passed from the .R file
+df <- p_df
+
+if (length(unique(df$island) > 1)) {
+  df %>%
+    ggplot(., aes(x = date_egg)) +
+    geom_point(stat = "count", aes(color = label)) +
+    labs(x = "Date Egg", y = "Count of Eggs Per Day") +
+    facet_wrap(. ~ island) +
+    theme_bw() +
+    theme(legend.position = "bottom")
+} else{
+  df %>%
+    ggplot(., aes(x = date_egg)) +
+    geom_point(stat = "count", aes(color = label)) +
+    labs(x = "Date Egg", y = "Count of Eggs Per Day") +
+    theme(legend.position = "bottom")
+}
+
+```
+
+# Body Mass  
+Body mass distribution among the separate species
+
+```{r}
+df %>%
+ggplot(.) +
+ggridges::geom_density_ridges(aes(x = body_mass_g, y = label, fill = island), alpha = 0.5) +
+labs(x = "Body Mass(g)", y = "") +
+theme_bw() +
+  theme(legend.position = "bottom")
+```
+
+# Flipper Length and Body Mass  
+Comparison of flipper length as a function of body mass
+```{r}
+df %>%
+  ggplot(.) +
+  geom_point(aes(x = flipper_length_mm, y = body_mass_g, color = label)) +
+  facet_wrap(. ~ island, nrow = 3) +
+  labs(x = "Flipper Length(mm)", y = "Body Mass(g)", color = "Species") +
+  theme_bw() +
+  theme(legend.position = "bottom")
+```
+
