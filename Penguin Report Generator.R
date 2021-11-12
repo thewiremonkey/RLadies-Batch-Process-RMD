@@ -3,6 +3,8 @@ library(tidyverse)
 library(knitr)
 library(rmarkdown)
 
+setwd("~/RLadies Batch Processing Talk 2021")
+
 #read in and pre-process data
 pdata <- palmerpenguins::penguins_raw %>%
   janitor::clean_names() %>%
@@ -19,11 +21,12 @@ generate_reports <- function(study) {
   #I like to superassign some objects for troubleshooting, but it isn't necessary
   study <<- study
   #I used the below in my talk, but have changed to passing the data via the params argument in the rmarkdown::render() function
-  # p_df <<- pdata %>% filter(study_name == study)
+  p_df <<- pdata %>% filter(study_name == study)
   min_date <- min(p_df$date_egg, na.rm = TRUE)
   max_date <- max(p_df$date_egg, na.rm = TRUE)
   title <- paste("Study: ", study)
   subtitle <- paste("From: ", min_date, "To: ", max_date)
+
 
   rmarkdown::render(
     #The RMarkdown file that will produce the report
@@ -40,7 +43,7 @@ generate_reports <- function(study) {
       Study = study,
       Min_Date = min_date,
       Max_Date = max_date,
-      Data = pdata %>% filter(study_name == study) #you can pass the data as a parameter!
+      Data = p_df #you can pass the data as a parameter!
     ),
     output_file = paste0("Report_", study) #Give each file a unique name
   )

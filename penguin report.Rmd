@@ -5,16 +5,21 @@ params:
   Study: Study
   Title: Title
   Subtitle: Subtitle
-  Min_Date: min_date
-  Max_Date: max_date
   Data: Data
-title: "`r params$Title`"
-subtitle: "`r params$Subtitle`"
-date: "`r params$Date`"
-output: 
-  word_document: 
+  Min_Date: Min_Date
+  Max_Date: Max_Date
+
+
+output:
+  word_document:
     toc: yes
     reference_docx: pin-styles.docx
+
+
+date: "`r params$Date`"
+title: "`r params$Title`"
+subtitle: "`r params$Subtitle`"
+species: "`r params$Species`"
 ---
 
 ```{r setup, include=FALSE}
@@ -24,10 +29,11 @@ knitr::opts_chunk$set(echo = FALSE,
 ```
 
 # Eggs Observed  
-Number of eggs observed by date within `r params$Min_Date` and `r params$Max_Date`
+Number of eggs observed by date
 
 ```{r}
 #this value has been passed from the .R file
+# df <- p_df
 df <- params$Data
 
 if (length(unique(df$island) > 1)) {
